@@ -2,13 +2,12 @@ function STATS=student_t()
 global MultiColumnData;
 
 %IMPORTANT NOTE: My system uses comma as decimal separator. This is why I
-%changed the points to commas in the excel file. To run the paired test on
-%another PC' the commas might need to be changed back to points.
+%changed the 
 
 x1 = MultiColumnData(:,1);
 x2 = MultiColumnData(:,2);
 
-isPairedTest = inputdlg('Enter 1 for a paired test and 0 for an unpaired test',...
+isPairedTest = inputdlg('Enter 1 for a paired test and 0 for an unpaired test)',...
              'Paired Test', [1 50]);
 
 PunP = str2num(cell2mat(isPairedTest));
@@ -18,7 +17,7 @@ alphaInput = inputdlg('Enter significance level)',...
          
 alpha = str2num(cell2mat(alphaInput));
 
-tailInput = inputdlg('Enter 1 for one-tailed test and 2 for two-tail test',...
+tailInput = inputdlg('Enter 1 for one-tailed test and 2 for two-tail test)',...
              'Tail', [1 50]);
          
 tail = str2num(cell2mat(tailInput));
@@ -30,28 +29,34 @@ end
 if ~all(isfinite(x1)) || ~all(isnumeric(x1)) || ~all(isfinite(x2)) || ~all(isnumeric(x2))
     error('Warning: all vector1 and vector2 values must be numeric and finite')
 end
-if ~isscalar(PunP) || ~isfinite(PunP) || ~isnumeric(PunP) || isempty(PunP)
-    error('Warning: it is required a scalar, numeric and finite Paired/unpaired value.')
-end
-if PunP ~= 0 && PunP ~= 1 %check if PunP is 0 or 1
-    error('Warning: PunP must be 0 for unpaired test or 1 for paired test.')
-end
-if PunP==1
-    if ((numel(x1) ~= numel(x2))),
-        error('Warning: for paired t_test requires the data vectors to have the same number of elements.');
+if nu>2
+    if ~isscalar(PunP) || ~isfinite(PunP) || ~isnumeric(PunP) || isempty(PunP)
+        error('Warning: it is required a scalar, numeric and finite Paired/unpaired value.')
+    end
+    if PunP ~= 0 && PunP ~= 1 %check if PunP is 0 or 1
+        error('Warning: PunP must be 0 for unpaired test or 1 for paired test.')
+    end
+    if PunP==1
+        if ((numel(x1) ~= numel(x2))),
+            error('Warning: for paired t_test requires the data vectors to have the same number of elements.');
+        end
     end
 end
-if ~isscalar(alpha) || ~isnumeric(alpha) || ~isfinite(alpha) || isempty(alpha)
-    error('Warning: it is required a numeric, finite and scalar ALPHA value.');
+if nu>3
+    if ~isscalar(alpha) || ~isnumeric(alpha) || ~isfinite(alpha) || isempty(alpha)
+        error('Warning: it is required a numeric, finite and scalar ALPHA value.');
+    end
+    if alpha <= 0 || alpha >= 1 %check if alpha is between 0 and 1
+        error('Warning: ALPHA must be comprised between 0 and 1.')
+    end
 end
-if alpha <= 0 || alpha >= 1 %check if alpha is between 0 and 1
-    error('Warning: ALPHA must be comprised between 0 and 1.')
-end
-if ~isscalar(tail) || ~isfinite(tail) || ~isnumeric(tail) || isempty(tail)
-    error('Warning: it is required a scalar, numeric and finite TAIL value.')
-end
-if tail ~= 2 && tail ~= 1 %check if tail is 1 or 2
-    error('Warning: TAIL must be 1 or 2.')
+if nu>4
+    if ~isscalar(tail) || ~isfinite(tail) || ~isnumeric(tail) || isempty(tail)
+        error('Warning: it is required a scalar, numeric and finite TAIL value.')
+    end
+    if tail ~= 2 && tail ~= 1 %check if tail is 1 or 2
+        error('Warning: TAIL must be 1 or 2.')
+    end
 end
 clear args  nu
 tr=repmat('-',1,60);
