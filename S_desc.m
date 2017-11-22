@@ -1,12 +1,9 @@
 function S_desc()
 global ndata;
-c=size(ndata,2);
-if c>1
-    x = inputdlg('Select a column number starting from 1:',...
-             'Column number', [1 50]);
-% you have to add a block which allow you to select one column.
-end
-X = ndata(:,str2num(cell2mat(x))); % Get all elements from column number
+
+% The script to get the column number is in load_data
+
+X = ndata
 mi=mean(X);
 edithandle=findobj(gcf,'Tag','mean');% findobj: locate graphics objects with specific properties
 set(edithandle,'visible','on')
