@@ -8,12 +8,16 @@ global MultiColumnData;
 x1 = MultiColumnData(:,1);
 x2 = MultiColumnData(:,2);
 
+%Remove nans
+x2(isnan(x2)) = [];
+x1(isnan(x1)) = [];
+
 isPairedTest = inputdlg('Enter 1 for a paired test and 0 for an unpaired test',...
              'Paired Test', [1 50]);
 
 PunP = str2num(cell2mat(isPairedTest));
 
-alphaInput = inputdlg('Enter significance level)',...
+alphaInput = inputdlg('Enter significance level',...
              'Significance Level', [1 50]);
          
 alpha = str2num(cell2mat(alphaInput));
