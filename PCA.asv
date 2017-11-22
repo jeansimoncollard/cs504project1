@@ -1,11 +1,11 @@
 function [E,D,NewData] = PCA()
-global MultiColumnData;
-lastEig = size(MultiColumnData,1); 
+global Data;
+lastEig = size(Data,1); 
 firstEig = 1; 
-Dim_Depart = size (MultiColumnData, 2);
-MultiColumnData=zscore(MultiColumnData);
+Dim_Depart = size (Data, 2);
+Data=zscore(Data);
 disp('covariances calculation in process...\n'); 
-covarianceMatrix = cov(MultiColumnData);
+covarianceMatrix = cov(Data);
 [E, D] = eig (covarianceMatrix);
 Tolerance = 1e-6;
 maxLastEig = sum (diag (D) > Tolerance);
@@ -36,8 +36,7 @@ if (get(findobj(gcf,'Tag','3DPCACheckbox'),'Value'))
 end 
 
 if Dim_Depart < (lastEig - firstEig + 1)
-    fprintf ('Data does not have enough dimensions.\n');
-    return;
+    fprintf ('D.\n');
 elseif Dim_Depart == (lastEig - firstEig + 1)
     fprintf ('Dimension not reduced.\n');
 else
@@ -73,20 +72,15 @@ E=E(:,col_select);
 D=D';
 %D=D(:,col_select);
 D=D(col_select,:);
-NewData=MultiColumnData*E;
-
-%Create variable for use in save function
-global PCADataToSave;
-PCADataToSave = NewData;
-
+NewData=Data*E;
 if size(NewData,2)==1
  figure,
  plot(NewData);
 elseif size(NewData,2)==2
     figure, hold on;
     plot(-1*NewData(1:193,1),-1*NewData(1:193,2),'ro','linewidth',3);
-    plot(-1*NewData(194:625,1),-1*NewData(194:625,2),'go','linewidth',3);
-    plot(-1*NewData(626:701,1),-1*NewData(626:701,2),'bo','linewidth',3);
+    plot(-1*NewData(194:625,1),-1*NewData(194:625,2),'go','linewidth',2);
+    plot(-1*NewData(626:701,1),-1*NewData(626:701,2),'bo','linewidth',4);
 elseif size(NewData,2)==3
     figure, hold on;
     scatter3(NewData(1:193,1),NewData(1:193,2),NewData(1:193,3),'r','filled');
