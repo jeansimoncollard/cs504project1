@@ -28,8 +28,6 @@ if ~all(isfinite(x3)) || ~all(isnumeric(x3))
     error('colum 3 is bad')
 end
     
-%check if parametric
-
 
     
     
