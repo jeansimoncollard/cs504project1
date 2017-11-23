@@ -28,23 +28,31 @@ if ~all(isfinite(x3)) || ~all(isnumeric(x3))
     error('colum 3 is bad')
 end
     
+%check if parametric
 
-    
-    
-    
-nargs=nargin;
-if isempty(nargs)|| nargs==0 
-    error('Data are required for the anovva test');
-elseif nargs==1
-    if ~ismatrix(x)
-     error('2D data is requared for the test')
-    end
-    if ~all(isnumeric(x))||~any(all(isfinite(x)))|| all(isnan(x(:)))
-     error('Data must be numerci and finite');
-    end
-    group=[];
+%assume non parametric
+parametric = 0;
+
+if (get(findobj(gcf,'Tag','para'),'Value') && get(findobj(gcf,'Tag','nonpara'),'Value'))
+    disp('Is the data parametric or not?'); 
+    return;
+end 
+if (not(get(findobj(gcf,'Tag','para'),'Value')) && not(get(findobj(gcf,'Tag','nonpara'),'Value')))
+    disp('Pick something'); 
+    return;
 end
- %ANOVA
+if (get(findobj(gcf,'Tag','para'),'Value'))
+    parametric = 1;
+end 
+if (get(findobj(gcf,'Tag','nonpara'),'Value'))
+    parametric = 0;
+end 
+
+%ANOVA 
+
+if parametric == 1
+    
+ 
    [n,r] = size(x);           
    xm = mean(x);             
    gm = mean(xm);             
@@ -54,15 +62,20 @@ end
    TSS = (x(:) - gm)'*(x(:) - gm);  
    SSE = TSS - RSS;                   
    if (df2 > 0)
-   mse = SSE/df2;
+        mse = SSE/df2;
    else
-   mse = NaN;
+        mse = NaN;
    end
     if (SSE~=0)
       F = (RSS/df1) / mse;
       p = fpval(F,df1,df2);    
     end
-%non para test
+end    
+
+%Kruskal-Wallis
+if parametric == 0
+    
+end
 
 
 
