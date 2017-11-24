@@ -47,11 +47,11 @@ end
 if (get(findobj(gcf,'Tag','nonpara'),'Value'))
     parametric = 0;
 end 
+x = [x1 x2 x3];
 
 %ANOVA 
 
-if parametric == 1  
-    x = [x1 x2 x3];
+if parametric == 1      
     [n,r] = size(x);           
     xm = mean(x);             
     gm = mean(xm);             
@@ -110,20 +110,14 @@ end
 
 %Kruskal-Wallis
 if parametric == 0
-    
+    [p,tbl,stats] = kruskalwallis(x);
+    if p
+        disp(strcat('The null hypothesis was rejected with a p value of:', p, ',alpha value: 0.01 and stats of')); 
+        disp(stats); 
+    else
+        disp(strcat('The null hypothesis was accepted with a p value of:', p, ',alpha value: 0.01 and stats of')); 
+        disp(stats); 
+    end
 end
-
-
-
-
-
-
-
-
-
-
-
-
- 
 
 end
