@@ -97,6 +97,7 @@ if parametric == 1
     wtitle = getString(message('stats:anova1:OnewayANOVA'));
     ttitle = getString(message('stats:anova1:ANOVATable'));
     statdisptable(atab, wtitle, ttitle);
+    nargs = 1;
     if nargs==1
         
         figure('pos',get(gcf,'pos') + [0,-200,0,0]);
